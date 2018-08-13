@@ -66,18 +66,17 @@ Note: I have not tried running the service code locally as my system crashes. I 
 • Instructions on how to run your service locally:
 
 endpoints:
-  POST - https://feujlv0hwh.execute-api.us-east-1.amazonaws.com/dev/chat
-  GET - https://feujlv0hwh.execute-api.us-east-1.amazonaws.com/dev/chats/{username}
-  GET - https://feujlv0hwh.execute-api.us-east-1.amazonaws.com/dev/chat/{id}
+  POST - https://lk1zugxhyl.execute-api.us-east-1.amazonaws.com/dev/chat
+  GET - https://lk1zugxhyl.execute-api.us-east-1.amazonaws.com/dev/chats/{username}
+  GET - https://lk1zugxhyl.execute-api.us-east-1.amazonaws.com/dev/chat/{id}
+
+Sample endpoints:
+1) curl -X POST https://lk1zugxhyl.execute-api.us-east-1.amazonaws.com/dev/chat --data '{"username":"testuser3","text": "testing3","timeout":60}'
+
+2) curl  https://lk1zugxhyl.execute-api.us-east-1.amazonaws.com/dev/chat/{981a8790-9f47-11e8-b49e-c102f4dcc713}
 
 
-curl -X POST lk1zugxhyl.execute-api.us-east-1.amazonaws.com/dev/chat 
---data '{"username":"testuser3","text": "testing3","timeout":60}'
-
-        2) curl  https://lk1zugxhyl.execute-api.us-east-1.amazonaws.com/dev/chats/{testuser3}
-
-       3)  curl  https://lk1zugxhyl.execute-api.us-east-1.amazonaws.com/dev/chat{2dbfe9e0-9e7e-11e8-bd95-6bafbf30c797}
-
+curl  https://lk1zugxhyl.execute-api.us-east-1.amazonaws.com/dev/chats/{testuser3}
 
           SCREENSHOT 2:  TEST
 
