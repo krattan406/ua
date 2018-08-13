@@ -1,26 +1,13 @@
-# Welcome to Serverless!
-#
-# This file is the main config file for your service.
-# It's very minimal at this point and uses default values.
-# You can always add more config options for more control.
-# We've included some commented out config examples here.
-# Just uncomment any of them to get that config option.
-#
-# For full config options, check the docs:
-#    docs.serverless.com
-#
-# Happy Coding!
-
-service: chat-service
-
+service: api-chat-service-v3
+  
 frameworkVersion: ">=1.1.0 <2.0.0"
+
 provider:
   name: aws
   runtime: nodejs6.10
-  stage: dev
-  region: us-east-1
   environment:
-    CHAT_TABLE: ${self:service}-${opt:stage, self:provider.stage}
+    DYNAMODB_TABLE: ${self:service}-${opt:stage, self:provider.stage}
+
   iamRoleStatements:
     - Effect: Allow
       Action:
@@ -28,8 +15,31 @@ provider:
         - dynamodb:Scan
         - dynamodb:GetItem
         - dynamodb:PutItem
+        - dynamodb:UpdateItem
+        - dynamodb:DeleteItem
       Resource: "*"
-  
+
+functions:
+   create:
+     handler: chat/create.create
+     events:
+      - http:
+          path: chat
+          method: post
+
+   list:
+     handler: chats/list.list
+     events:
+      - http:
+          path: chats/{username}
+          method: get
+
+   get:
+     handler: chat/get.get
+     events:
+      - http:
+          path: chat/{id}
+          method: get
 resources:
   Resources:
     ChatDynamoDbTable:
@@ -37,26 +47,33 @@ resources:
       DeletionPolicy: Retain
       Properties:
         AttributeDefinitions:
-          -
-            AttributeName: "id"
-            AttributeType: "S"   
+          - AttributeName: id
+            AttributeType: S
+          - AttributeName: username
+            AttributeType: S
         KeySchema:
-          -
-            AttributeName: "id"
-            KeyType: "HASH"
+          - AttributeName: id
+            KeyType: HASH
+        GlobalSecondaryIndexes:
+          - IndexName: chat-index
+            KeySchema:
+              - AttributeName: id
+                KeyType: HASH
+            Projection:
+              ProjectionType: ALL
+            ProvisionedThroughput:
+              ReadCapacityUnits: 1
+              WriteCapacityUnits: 1
+          - IndexName: user-index
+            KeySchema:
+              - AttributeName: username
+                KeyType: HASH
+            Projection:
+              ProjectionType: ALL
+            ProvisionedThroughput:
+              ReadCapacityUnits: 1
+              WriteCapacityUnits: 1
         ProvisionedThroughput:
           ReadCapacityUnits: 1
           WriteCapacityUnits: 1
-        StreamSpecification:
-          StreamViewType: "NEW_AND_OLD_IMAGES"
-        TableName: ${self:provider.environment.CHAT_TABLE}
-    
-functions:
-  createChat:
-    handler: api/chat.create
-    memorySize: 128
-    description: create a chat conversation.
-    events:
-      - http: 
-          path: chat
-          method: post
+        TableName: ${self:provider.environment.DYNAMODB_TABLE}
