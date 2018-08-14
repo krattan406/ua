@@ -1,10 +1,12 @@
-Instructions on how to compile your service : 
-      The service uses Nodejs, DynamoDb, Lambda functions and serverless framework. I have used AWS Lambda services for the         excercise.
 
-Setup & Compilation: 
-     1) If you want to deploy the service on AWS, you need an AWS account. I have used the free tier account.
-             https://aws.amazon.com/free/
-     2) Install/ update pip:
+	Instructions on how to compile your service : 
+     		 The service uses Nodejs, DynamoDb, Lambda functions and serverless framework. I have used AWS Lambda services for the         excercise.
+
+
+	Setup & Compilation: 
+   		  1) If you want to deploy the service on AWS, you need an AWS account. I have used the free tier account.
+            		 https://aws.amazon.com/free/
+    		 2) Install/ update pip:
               komal-2:~ komalrattan$ python3 get-pip.py --user
 
  ~~~~~
