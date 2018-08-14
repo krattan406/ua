@@ -89,7 +89,8 @@ SCREENSHOT 2:  TEST
 • The decisions you made
 
 	1) The problem stated a requirement create a production ready, horizontally scalable solution:
-	Severless architecture seems to be the soution for concurrency requirements without putting pressure for the underlying infrastructure requirements. 
+	Severless architecture seems to be the soution for concurrency requirements and 
+       underlying infrastructure requirements. 
 
 	AWS Lambda :  gets horizontal scaling
 
