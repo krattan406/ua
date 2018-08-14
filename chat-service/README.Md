@@ -1,11 +1,12 @@
 
 	Instructions on how to compile your service : 
-     		 The service uses Nodejs, DynamoDb, Lambda functions and serverless framework. I have used AWS Lambda services for the         excercise.
+     		 The service uses Nodejs, DynamoDb, Lambda functions and serverless framework.
+		 I have used AWS Lambda services for the excercise.
 
 
 	Setup & Compilation: 
-   		  1) If you want to deploy the service on AWS, you need an AWS account. I have used the free tier account.
-            		 https://aws.amazon.com/free/
+   		  1) If you want to deploy the service on AWS, you need an AWS account. 
+		  I have used the free tier account. https://aws.amazon.com/free/
     		 2) Install/ update pip:
               komal-2:~ komalrattan$ python3 get-pip.py --user
 
@@ -87,7 +88,8 @@ SCREENSHOT 2:  TEST
 
 • The decisions you made
 
-	1) The problem stated a requirement create a production ready, horizontally scalable solution: Severless architecture seems to be the soution for concurrency requirements without putting pressure for the underlying infrastructure requirements. 
+	1) The problem stated a requirement create a production ready, horizontally scalable solution:
+	Severless architecture seems to be the soution for concurrency requirements without putting pressure for the underlying infrastructure requirements. 
 
 	AWS Lambda :  gets horizontal scaling
 
