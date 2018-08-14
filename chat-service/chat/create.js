@@ -1,54 +1,65 @@
 'use strict';
-
 const uuid = require('uuid');
 const AWS = require('aws-sdk');
+//const Bluebird = require('bluebird')
+
+//AWS.config.setPromisesDependency(Bluebird);
+AWS.config.setPromisesDependency();
 
 const dynamoDb = new AWS.DynamoDB.DocumentClient();
 
 module.exports.create = (event, context, callback) => {
-  const timestamp = new Date().getTime();
-  const data = JSON.parse(event.body);
-  if (typeof data.text !== 'string' ||
-  	typeof data.username !=='string'
-  
-  ) {
+  const reqx = console.log(event.body);
+ const username =  event.username;
+  const text = event.text;
+  const timeout = event.timeout;
+
+if (typeof username !== 'string' || 
+		typeof text !== 'string' || 
+		typeof timeout !== 'number') {
     console.error('Validation Failed');
-    callback(null, {
-      statusCode: 400,
-      headers: { 'Content-Type': 'text/plain' },
-      body: 'Couldn\'t create the chat.',
-    });
+    callback(new Error('Couldn\'t submit chat conversation because of validation errors.'));
     return;
   }
 
-  const params = {
-    TableName: process.env.DYNAMODB_TABLE,
-    Item: {
-      id: uuid.v1(),
-      username: data.username,
-      text: data.text,
-      timeout: data.timeout,
-    },
-  };
-
-  // write the todo to the database
-  dynamoDb.put(params, (error) => {
-    // handle potential errors
-    if (error) {
-      console.error(error);
+submitChat( chatInfo( username, text, timeout))
+	.then( res => {
+	callback(null, {
+		statusCode: 201,
+   		 body: JSON.stringify({
+     	 id : res.id,
+		})
+		});
+	})
+	 .catch(err => {
+      console.log(err);
       callback(null, {
-        statusCode: error.statusCode || 501,
-        headers: { 'Content-Type': 'text/plain' },
-        body: 'Couldn\'t create the chat.',
-      });
-      return;
-    }
+        statusCode: 500,
+        body: JSON.stringify({
+          message: `Unable to submit chat`
+        })
+      })
+    });
+};
 
-    // create a response
-    const response = {
-      statusCode: 201,
-      body: JSON.stringify(params.Item),
-    };
-    callback(null, response);
-  });
+const submitChat = chat => {
+	console.log('Submitting chat');
+ 	 const chatInfo = {
+    TableName:process.env.DYNAMODB_TABLE,
+    Item: chat
+  };
+  return dynamoDb.put(chatInfo).promise()
+    .then(res => chat);
+};
+
+const chatInfo = (username, text, timeout) => {
+  const timestamp = new Date().getTime();
+  return {
+    id: uuid.v1(),
+    username: username,
+    text: text,
+    timeout: timeout,
+    submittedAt: timestamp,
+    updatedAt: timestamp,
+  };
 };
